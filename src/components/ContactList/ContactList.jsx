@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import { Button, Li } from './ContactList.styled';
 import { nanoid } from 'nanoid';
 
-export const ContactList = ({ contacts, del }) => {
+export default function ContactList ({ contacts, deleteContact }) {
   const deletedId = id => {
-    del(id);
+    deleteContact (id);
   };
 
   const createList = () => {

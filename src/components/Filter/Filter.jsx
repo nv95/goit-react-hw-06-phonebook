@@ -1,15 +1,12 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FiltContainer } from './Filter.styled';
 
-export const Filter = ({ setFilterToState }) => {
-  const [filterValue, setFilterValue] = useState('');
+export default function Filter ({filterValue, updateFilter})  {
 
-  const handleChange = e => {
-    const value = e.target.value.toUpperCase();
-    setFilterValue(value);
-    setFilterToState(value);
-  };
+  const handleChange = ({target}) =>{
+    updateFilter(target.value);
+  }
+  
   return (
     <FiltContainer>
       <h4>Find contacts by name</h4>
@@ -18,5 +15,6 @@ export const Filter = ({ setFilterToState }) => {
   );
 };
 Filter.propTypes = {
-  setFilterToState: PropTypes.func.isRequired,
+  filterValue: PropTypes.string.isRequired,
+  updateFilter: PropTypes.func.isRequired,
 };
