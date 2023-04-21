@@ -1,28 +1,28 @@
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Li } from './ContactList.styled';
-import { nanoid } from 'nanoid';
+import { removeContact } from 'store/slice';
 
-export default function ContactList ({ contacts, deleteContact }) {
-  const deletedId = id => {
-    deleteContact (id);
-  };
+export default function ContactList() {
+  const contacts = useSelector(state => state.contacts.contacts);
+  const filter = useSelector(state => state.filter);
+  const dispatch = useDispatch();
 
-  const createList = () => {
-    return contacts.map(contact => {
-      return (
-        <Li key={nanoid()} id={contact.id}>
-          {contact.name}: {contact.number}
-          <Button data-id={contact.id} onClick={() => deletedId(contact.id)}>
-            Delete
-          </Button>
-        </Li>
-      );
-    });
-  };
-  return <ul>{createList()}</ul>;
-};
+  const normalizedName = filter.toLowerCase();
+  const contactsAll = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(normalizedName)
+  );
 
-ContactList.propTypes = {
-  contacts: PropTypes.array.isRequired,
-  del: PropTypes.func.isRequired,
-};
+  return contactsAll.map(contact => {
+    return (
+      <Li key={contact.id} id={contact.id}>
+        {contact.name}: {contact.number}
+        <Button
+          data-id={contact.id}
+          onClick={() => dispatch(removeContact(contact.id))}
+        >
+          Delete
+        </Button>
+      </Li>
+    );
+  });
+}
